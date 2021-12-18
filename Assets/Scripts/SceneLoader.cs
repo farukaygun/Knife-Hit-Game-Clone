@@ -8,7 +8,6 @@ public class SceneLoader : MonoBehaviour
     public static SceneLoader instance = null;
 
     public Animator transition;
-    public float transitionTime = 0.5f;
 
     void Awake() {
         instance = this;
@@ -33,7 +32,7 @@ public class SceneLoader : MonoBehaviour
     IEnumerator LoadScene(int sceneIndex) {
         transition.SetTrigger("Start");
 
-        yield return new WaitForSecondsRealtime(transitionTime);
+        yield return new WaitForSecondsRealtime(0.25f);
 
         SceneManager.LoadScene(sceneIndex);
     }

@@ -15,8 +15,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
 
     [SerializeField] GameObject circle;
-    [SerializeField] GameObject panelGameOver;
-    [SerializeField] GameObject panelWin;
+    [SerializeField] GameObject panelPauseMenu;
 
     [SerializeField] Text textLevel;
     [SerializeField] Text textCounter;
@@ -97,13 +96,17 @@ public class GameManager : MonoBehaviour {
     public void GameOver() {
         Pause();
         step = Step.wait;
-        panelGameOver.SetActive(true);
+
+        panelPauseMenu.SetActive(true);
+        PauseMenu.instance.ShowGameOverMenu();
     }
 
     void Win() {
         Pause();
         step = Step.wait;
-        panelWin.SetActive(true);
+
+        panelPauseMenu.SetActive(true);
+        PauseMenu.instance.ShowWinMenu();
     }
 
     public void CreateScene() {
@@ -113,7 +116,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public void Pause() {
-        print("pause");
         Time.timeScale = 0f; 
     }
 

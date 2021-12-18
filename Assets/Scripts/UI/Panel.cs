@@ -21,7 +21,7 @@ public class Panel : MonoBehaviour {
 
     void FixedUpdate() {
         if (Time.timeScale == 0) return; // for pause game
-        RotateTextCounter();
+        //RotateTextCounter();
     }
 
     void RotateTextCounter() {
@@ -31,6 +31,8 @@ public class Panel : MonoBehaviour {
     public void Pause() {
         GameManager.instance.Pause();
         GameManager.instance.step = Step.wait;
+
         panelPause.SetActive(true);
+        PauseMenu.instance.ShowPauseMenu();
     }
 }
