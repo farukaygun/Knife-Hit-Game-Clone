@@ -94,6 +94,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void GameOver() {
+        print("over");
         Pause();
         step = Step.wait;
 
