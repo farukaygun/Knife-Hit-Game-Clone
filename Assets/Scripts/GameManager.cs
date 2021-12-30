@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public enum Step {
     wait,
-    movingBladeToThrowPoint,
-    movingBladeToDestinationPoint,
-    newBladeSpawn,
+    movingKnifeToThrowPoint,
+    movingKnifeToDestinationPoint,
+    newKnifeSpawn,
 }
 
 public class GameManager : MonoBehaviour {
@@ -20,16 +20,15 @@ public class GameManager : MonoBehaviour {
     [SerializeField] Text textLevel;
     [SerializeField] Text textCounter;
 
-    GameObject blade;
+    GameObject knife;
 
     public Step step;
     int counter;
     int level = 1;
-    float bladeMoveSpeed = 20f;
+    float knifeMoveSpeed = 90f;
 
-    Vector3 bladeThrowPoint = new Vector3(0, -3, 0);
-    Vector3 bladeSpawnPoint = new Vector3(0, -7, 0);
-    Vector3 bladeDestinationPoint = new Vector3(0, 1, 0);
+    Vector3 knifeThrowPoint = new Vector3(0, -3, 0);
+    Vector3 knifeSpawnPoint = new Vector3(0, -7, 0);
 
     void Awake() {
         instance = this;
@@ -46,74 +45,79 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (Time.timeScale == 0) return;
-        if (counter == 0) Win();
+        if (counter == 0) StartCoroutine(Win());
 
         // Using EventSystem.current.isPointerOverGameObject() you can check if Ui is clicked. If it is, dont do anything
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
-            step = Step.movingBladeToDestinationPoint;
+            step = Step.movingKnifeToDestinationPoint;
         }
     }
 
     void FixedUpdate() {
         if (Time.timeScale == 0) return;
+
         switch (step) {
-            case Step.movingBladeToThrowPoint:
-                SetBladeToThrow(blade);
+            case Step.movingKnifeToThrowPoint:
+                SetKnifeToThrow(knife);
                 break;
-            case Step.movingBladeToDestinationPoint:
-                blade.transform.position = Vector3.MoveTowards(blade.transform.position, bladeDestinationPoint, bladeMoveSpeed * Time.deltaTime);
+            case Step.movingKnifeToDestinationPoint:
+                ThrowKnife();
                 break;
-            case Step.newBladeSpawn:
-                GetBladeFromPool();
-                step = Step.movingBladeToThrowPoint;
+            case Step.newKnifeSpawn:
+                GetKnifeFromPool();
+                step = Step.movingKnifeToThrowPoint;
                 break;
         }
     }
 
-    public void StabbedBlade() {
-        step = Step.newBladeSpawn;
-        CounterDecrease();
+    // Throwing knife to wood
+    void ThrowKnife() {
+        Rigidbody2D rb = knife.transform.GetComponent<Rigidbody2D>();
+        rb.AddForce(new Vector3(0, (knifeMoveSpeed * Time.deltaTime) * 10, 0), ForceMode2D.Impulse);
+        step = Step.newKnifeSpawn;
     }
 
-    GameObject GetBladeFromPool() {
-        blade = BladePool.instance.GetPooledBlade();
+    GameObject GetKnifeFromPool() {
+        knife = KnifePool.instance.GetPooledKnife();
 
-        if (blade != null) {
-            blade.transform.position = bladeSpawnPoint;
-            blade.transform.rotation = Quaternion.identity;
-            blade.SetActive(true);
+        if (knife != null) {
+            knife.transform.position = knifeSpawnPoint;
+            knife.transform.rotation = Quaternion.identity;
+            knife.SetActive(true);
         }
-
-        return blade;
+        return knife;
     }
 
-    void SetBladeToThrow(GameObject blade) {
-        if (blade.transform.position != bladeThrowPoint) {
-            blade.transform.position = Vector3.MoveTowards(blade.transform.position, bladeThrowPoint, bladeMoveSpeed * Time.deltaTime);
-        } else step = Step.wait;
+    void SetKnifeToThrow(GameObject knife) {
+        if (knife.transform.position != knifeThrowPoint) {
+            knife.transform.position = Vector3.MoveTowards(knife.transform.position, knifeThrowPoint, knifeMoveSpeed * Time.deltaTime);
+        }
     }
 
-    public void GameOver() {
-        print("over");
+    public IEnumerator GameOver() {
         Pause();
         step = Step.wait;
+
+        yield return new WaitForSecondsRealtime(1f);
 
         panelPauseMenu.SetActive(true);
         PauseMenu.instance.ShowGameOverMenu();
     }
 
-    void Win() {
+    IEnumerator Win() {
         Pause();
         step = Step.wait;
+            
+        yield return new WaitForSecondsRealtime(1f);
 
         panelPauseMenu.SetActive(true);
         PauseMenu.instance.ShowWinMenu();
     }
 
     public void CreateScene() {
-        RandomBladeCounter();
-        GetBladeFromPool();
-        step = Step.movingBladeToThrowPoint;
+        RandomKnifeCounter();
+        GetKnifeFromPool();
+        step = Step.movingKnifeToThrowPoint;
     }
 
     public void Pause() {
@@ -124,7 +128,7 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1f;
     }
 
-    void CounterDecrease() {
+    public void CounterDecrease() {
         counter--;
         textCounter.text = counter.ToString();
     }
@@ -139,14 +143,15 @@ public class GameManager : MonoBehaviour {
         circle.transform.rotation = new Quaternion(0, 0, 0, 0);
         circle.transform.DetachChildren();
 
-        GameObject[] blades = GameObject.FindGameObjectsWithTag("Blade");
+        GameObject[] knives = GameObject.FindGameObjectsWithTag("Knife");
 
-        foreach (var item in blades) {
+        foreach (var item in knives) {
+            item.GetComponent<Rigidbody2D>().isKinematic = false;
             item.SetActive(false);
         }
     }
 
-    public void RandomBladeCounter() {
+    public void RandomKnifeCounter() {
         counter = Random.Range(8, 12);
         textCounter.text = counter.ToString();
     }

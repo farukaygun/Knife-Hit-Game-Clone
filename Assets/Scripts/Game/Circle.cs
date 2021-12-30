@@ -6,6 +6,7 @@ public class Circle : MonoBehaviour
 {
     public static Circle instance = null;
 
+    Rigidbody2D rb;
     public float rotationSpeed = 5f;
 
     void Awake() {
@@ -15,7 +16,8 @@ public class Circle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("ChangeRotation", 5f, 5f);
+        rb = GetComponent<Rigidbody2D>();
+        InvokeRepeating("ChangeRotation", 4f, 4f);
     }
 
     // Update is called once per frame
@@ -25,7 +27,7 @@ public class Circle : MonoBehaviour
 
     void FixedUpdate() {
         if (Time.timeScale == 0) return; // for pause game
-        transform.Rotate(0, 0, rotationSpeed);
+        rb.rotation += rotationSpeed * Time.deltaTime * 40;
     }
 
     void ChangeRotation() {

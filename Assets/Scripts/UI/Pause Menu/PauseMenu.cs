@@ -36,18 +36,22 @@ public class PauseMenu : MonoBehaviour
     }
 
     void Resume() {
+        buttonResume.interactable = false;
+
         GameManager.instance.Resume();
         gameObject.SetActive(false);
     }
 
     IEnumerator NextLevel() {
+        buttonNextLevel.interactable = false;
+
         AnimatorTransitionController.instance.PlayStart();
 
         yield return new WaitForSecondsRealtime(0.25f);
-        
+
         GameManager.instance.LevelIncrease();
         GameManager.instance.ClearScene();
-        GameManager.instance.RandomBladeCounter();
+        GameManager.instance.RandomKnifeCounter();
         GameManager.instance.CreateScene();
         GameManager.instance.Resume();
         gameObject.SetActive(false);
@@ -56,6 +60,8 @@ public class PauseMenu : MonoBehaviour
     }
 
     IEnumerator Restart() {
+        buttonRestart.interactable = false;
+
         AnimatorTransitionController.instance.PlayStart();
 
         yield return new WaitForSecondsRealtime(0.25f); // animation duration
@@ -70,6 +76,7 @@ public class PauseMenu : MonoBehaviour
     }
 
     IEnumerator Exit() {
+
         AnimatorTransitionController.instance.PlayStart();
 
         yield return new WaitForSecondsRealtime(0.25f); // animation duration
@@ -110,5 +117,9 @@ public class PauseMenu : MonoBehaviour
         buttonResume.gameObject.SetActive(false);
         buttonRestart.gameObject.SetActive(false);
         buttonNextLevel.gameObject.SetActive(false);
+
+        buttonResume.interactable = true;
+        buttonRestart.interactable = true;
+        buttonNextLevel.interactable = true;
     }
 }
