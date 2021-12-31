@@ -659,7 +659,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1630,8 +1630,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1709648462}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0846, y: -0.0607, z: 0}
-  m_LocalScale: {x: 8.967342, y: 11.832774, z: 1}
+  m_LocalPosition: {x: -0.199, y: -0.7866, z: 0}
+  m_LocalScale: {x: 15.809762, y: 25.303314, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -1646,9 +1646,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1797187172}
   - component: {fileID: 1797187171}
-  - component: {fileID: 1797187170}
   - component: {fileID: 1797187173}
   - component: {fileID: 1797187174}
+  - component: {fileID: 1797187170}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameController
@@ -1665,11 +1665,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1797187169}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a9ee694b30fa1f469e843c3f28eecbf, type: 3}
+  m_Script: {fileID: 11500000, guid: 76afd33554e165f4b982625ec766a57f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pooledBlades: []
-  bladeToPool: {fileID: 3331765896283827762, guid: 624b0a4c80206a04ca7042e0dd45472e, type: 3}
+  pooledKnives: []
+  knifeToPool: {fileID: 3331765896283827762, guid: 624b0a4c80206a04ca7042e0dd45472e, type: 3}
 --- !u!114 &1797187171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1715,6 +1715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transition: {fileID: 6553493806138776311}
+  knife: {fileID: 0}
 --- !u!114 &1797187174
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -27,12 +27,14 @@ public class Circle : MonoBehaviour
 
     void FixedUpdate() {
         if (Time.timeScale == 0) return; // for pause game
-        rb.rotation += rotationSpeed * Time.deltaTime * 40;
+        rb.rotation += rotationSpeed * Time.deltaTime * 40; // for physics works rotate rb instead of transform.
     }
 
+    // 
     void ChangeRotation() {
         rotationSpeed = Random.Range(-5f, 5f);
 
+        // if rotation speed is less than 2, wood rotates too slow.
         while (rotationSpeed <= 2 && rotationSpeed >= 0 ||
                 rotationSpeed >= -2 && rotationSpeed <= 0
                 )

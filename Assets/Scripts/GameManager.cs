@@ -27,8 +27,8 @@ public class GameManager : MonoBehaviour {
     int level = 1;
     float knifeMoveSpeed = 90f;
 
-    Vector3 knifeThrowPoint = new Vector3(0, -3, 0);
-    Vector3 knifeSpawnPoint = new Vector3(0, -7, 0);
+    Vector3 knifeThrowPoint = new Vector3(0, -6, 0);
+    Vector3 knifeSpawnPoint = new Vector3(0, -12, 0);
 
     void Awake() {
         instance = this;
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         AnimatorTransitionController.instance.PlayEnd();
-        Instantiate(circle, new Vector3(0, 1f, 0), Quaternion.identity); // get circle prefab
+        Instantiate(circle, new Vector3(0, 2f, 0), Quaternion.identity); // get circle prefab
         textLevel.text = level.ToString();
         CreateScene();
     }
@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour {
                 break;
             case Step.movingKnifeToDestinationPoint:
                 ThrowKnife();
+                step = Step.newKnifeSpawn;
                 break;
             case Step.newKnifeSpawn:
                 GetKnifeFromPool();
@@ -73,8 +74,7 @@ public class GameManager : MonoBehaviour {
     // Throwing knife to wood
     void ThrowKnife() {
         Rigidbody2D rb = knife.transform.GetComponent<Rigidbody2D>();
-        rb.AddForce(new Vector3(0, (knifeMoveSpeed * Time.deltaTime) * 10, 0), ForceMode2D.Impulse);
-        step = Step.newKnifeSpawn;
+        rb.AddForce(new Vector3(0, (knifeMoveSpeed * Time.deltaTime) * 20, 0), ForceMode2D.Impulse);
     }
 
     GameObject GetKnifeFromPool() {
@@ -117,6 +117,7 @@ public class GameManager : MonoBehaviour {
     public void CreateScene() {
         RandomKnifeCounter();
         GetKnifeFromPool();
+
         step = Step.movingKnifeToThrowPoint;
     }
 
