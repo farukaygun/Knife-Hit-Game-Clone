@@ -5,121 +5,119 @@ using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
-    public static PauseMenu instance = null;
+	public static PauseMenu instance = null;
 
-    public Text textGameOver;
-    public Text textWin;
-    public Text textPause;
+	public Text textGameOver;
+	public Text textWin;
+	public Text textPause;
 
-    public Button buttonExit;
-    public Button buttonRestart;
-    public Button buttonResume;
-    public Button buttonNextLevel;
+	public Button buttonExit;
+	public Button buttonRestart;
+	public Button buttonResume;
+	public Button buttonNextLevel;
 
-    void Awake() {
-        instance = this;
-    }
+	void Awake()
+	{
+		instance = this;
+	}
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        buttonResume.onClick.AddListener(() => Resume());
-        buttonNextLevel.onClick.AddListener(() => StartCoroutine(NextLevel()));
-        buttonRestart.onClick.AddListener(() => StartCoroutine(Restart()));
-        buttonExit.onClick.AddListener(() => StartCoroutine(Exit()));
-    }
+	void Start()
+	{
+		buttonResume.onClick.AddListener(() => Resume());
+		buttonNextLevel.onClick.AddListener(() => StartCoroutine(NextLevel()));
+		buttonRestart.onClick.AddListener(() => StartCoroutine(Restart()));
+		buttonExit.onClick.AddListener(() => StartCoroutine(Exit()));
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	void Resume()
+	{
+		buttonResume.interactable = false;
 
-    void Resume() {
-        buttonResume.interactable = false;
+		GameManager.instance.Resume();
+		gameObject.SetActive(false);
+	}
 
-        GameManager.instance.Resume();
-        gameObject.SetActive(false);
-    }
+	IEnumerator NextLevel()
+	{
+		buttonNextLevel.interactable = false;
 
-    IEnumerator NextLevel() {
-        buttonNextLevel.interactable = false;
+		AnimatorTransitionController.instance.PlayStart();
 
-        AnimatorTransitionController.instance.PlayStart();
+		yield return new WaitForSecondsRealtime(0.25f);
 
-        yield return new WaitForSecondsRealtime(0.25f);
+		GameManager.instance.LevelIncrease();
+		GameManager.instance.ClearScene();
+		GameManager.instance.RandomKnifeCounter();
+		GameManager.instance.CreateScene();
+		GameManager.instance.Resume();
+		gameObject.SetActive(false);
 
-        GameManager.instance.LevelIncrease();
-        GameManager.instance.ClearScene();
-        GameManager.instance.RandomKnifeCounter();
-        GameManager.instance.CreateScene();
-        GameManager.instance.Resume();
-        gameObject.SetActive(false);
+		AnimatorTransitionController.instance.PlayEnd();
+	}
 
-        AnimatorTransitionController.instance.PlayEnd();
-    }
+	IEnumerator Restart()
+	{
+		buttonRestart.interactable = false;
 
-    IEnumerator Restart() {
-        buttonRestart.interactable = false;
+		AnimatorTransitionController.instance.PlayStart();
 
-        AnimatorTransitionController.instance.PlayStart();
+		yield return new WaitForSecondsRealtime(0.25f); // animation duration
 
-        yield return new WaitForSecondsRealtime(0.25f); // animation duration
+		GameManager.instance.ClearScene();
+		GameManager.instance.CreateScene();
+		GameManager.instance.Resume();
 
-        GameManager.instance.ClearScene();
-        GameManager.instance.CreateScene();
-        GameManager.instance.Resume();
+		gameObject.SetActive(false);
 
-        gameObject.SetActive(false);
+		AnimatorTransitionController.instance.PlayEnd();
+	}
 
-        AnimatorTransitionController.instance.PlayEnd();
-    }
+	IEnumerator Exit()
+	{
 
-    IEnumerator Exit() {
+		AnimatorTransitionController.instance.PlayStart();
 
-        AnimatorTransitionController.instance.PlayStart();
+		yield return new WaitForSecondsRealtime(0.25f); // animation duration
 
-        yield return new WaitForSecondsRealtime(0.25f); // animation duration
+		SceneLoader.instance.LoadPreviousScene();
+	}
 
-        SceneLoader.instance.LoadPreviousScene();
-    }
+	public void ShowPauseMenu()
+	{
+		HideAll();
 
-    /// <summary>
-    /// UI show hide panels
-    /// </summary>
+		textPause.gameObject.SetActive(true);
+		buttonResume.gameObject.SetActive(true);
+	}
 
-    public void ShowPauseMenu() {
-        HideAll();
+	public void ShowWinMenu()
+	{
+		HideAll();
 
-        textPause.gameObject.SetActive(true);
-        buttonResume.gameObject.SetActive(true);
-    }
+		textWin.gameObject.SetActive(true);
+		buttonNextLevel.gameObject.SetActive(true);
+	}
 
-    public void ShowWinMenu() {
-        HideAll();
+	public void ShowGameOverMenu()
+	{
+		HideAll();
 
-        textWin.gameObject.SetActive(true);
-        buttonNextLevel.gameObject.SetActive(true);
-    }
+		textGameOver.gameObject.SetActive(true);
+		buttonRestart.gameObject.SetActive(true);
+	}
 
-    public void ShowGameOverMenu() {
-        HideAll();
+	void HideAll()
+	{
+		textWin.gameObject.SetActive(false);
+		textPause.gameObject.SetActive(false);
+		textGameOver.gameObject.SetActive(false);
 
-        textGameOver.gameObject.SetActive(true);
-        buttonRestart.gameObject.SetActive(true);
-    }
+		buttonResume.gameObject.SetActive(false);
+		buttonRestart.gameObject.SetActive(false);
+		buttonNextLevel.gameObject.SetActive(false);
 
-    void HideAll() {
-        textWin.gameObject.SetActive(false);
-        textPause.gameObject.SetActive(false);
-        textGameOver.gameObject.SetActive(false);
-
-        buttonResume.gameObject.SetActive(false);
-        buttonRestart.gameObject.SetActive(false);
-        buttonNextLevel.gameObject.SetActive(false);
-
-        buttonResume.interactable = true;
-        buttonRestart.interactable = true;
-        buttonNextLevel.interactable = true;
-    }
+		buttonResume.interactable = true;
+		buttonRestart.interactable = true;
+		buttonNextLevel.interactable = true;
+	}
 }

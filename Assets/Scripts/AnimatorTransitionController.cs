@@ -4,36 +4,30 @@ using UnityEngine;
 
 public class AnimatorTransitionController : MonoBehaviour
 {
-    public static AnimatorTransitionController instance = null;
+	public static AnimatorTransitionController instance = null;
 
-    public Animator transition;
-    public Animator knife;
+	public Animator transition;
+	public Animator knife;
 
-    void Awake() {
-        instance = this;
-    }
+	void Awake()
+	{
+		instance = this;
+	}
 
-    // Start is called before the first frame update
-    void Start() {
-        
-    }
+	public void PlayStart()
+	{
+		transition.SetTrigger("Start");
+	}
 
-    // Update is called once per frame
-    void Update() {
-        
-    }
+	// TODO
+	public void PlayEnd()
+	{
+		transition.SetTrigger("End");
+	}
 
-    public void PlayStart() {
-        transition.SetTrigger("Start");
-    }
-
-    // TODO
-    public void PlayEnd() {
-        transition.SetTrigger("End");
-    }
-
-    // TODO
-    public void PlayKnifeRotate() {
-        knife.SetTrigger("Rotate");
-    }
+	// TODO
+	public void PlayKnifeRotate()
+	{
+		knife.SetTrigger("Rotate");
+	}
 }

@@ -5,35 +5,25 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    public static SceneLoader instance = null;
+	public static SceneLoader instance = null;
 
-    public Animator transition;
+	public Animator transition;
 
-    void Awake() {
-        instance = this;
-    }
+	void Awake()
+	{
+		instance = this;
+	}
 
-    // Start is called before the first frame update
-    void Start()
-    {
+	public void LoadNextScene() => StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex + 1));
 
-    }
+	public void LoadPreviousScene() => StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex - 1));
 
-    // Update is called once per frame
-    void Update()
-    {
+	IEnumerator LoadScene(int sceneIndex)
+	{
+		transition.SetTrigger("Start");
 
-    }
+		yield return new WaitForSecondsRealtime(0.25f);
 
-    public void LoadNextScene() => StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex + 1));
-
-    public void LoadPreviousScene() => StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex - 1));
-
-    IEnumerator LoadScene(int sceneIndex) {
-        transition.SetTrigger("Start");
-
-        yield return new WaitForSecondsRealtime(0.25f);
-
-        SceneManager.LoadScene(sceneIndex);
-    }
+		SceneManager.LoadScene(sceneIndex);
+	}
 }
