@@ -71,3 +71,8 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+/Knife Hit/UserSettings
+/Knife Hit/Temp
+/Knife Hit/obj/Debug
+/Knife Hit/Logs
+/Knife Hit/Library
